@@ -1,9 +1,10 @@
 
 
 ## 环境准备
-0. 显存80GB及以上的显卡（显示环境H800x1卡）  
+0. 显存80GB及以上的显卡（演示环境H800x1卡）  
 1. 拉取镜像：`registry.cn-hangzhou.aliyuncs.com/morris-share/sglang:v0.5.3-cu129 `
 2. Docker环境
+3. 模型black-forest-labs/FLUX.1-dev下载
 
 ## 启动基础容器
 sglang容器已经把cuda、pytorch、transformer等环境都已经安装好了，直接用更为方便。  
