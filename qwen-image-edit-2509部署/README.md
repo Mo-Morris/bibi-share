@@ -45,6 +45,7 @@ python main.py
 ## 测试功能
 
 打开网页：http://localhost:8099  
+![](./gradio.png)
 
 调用接口测试：
 ```
