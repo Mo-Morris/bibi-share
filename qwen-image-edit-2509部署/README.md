@@ -41,6 +41,8 @@ pip install gradio -i https://pypi.tuna.tsinghua.edu.cn/simple
 cd /workspace/app
 python main.py
 ```
+终端：
+![](./startapp.png)
 
 ## 测试功能
 
