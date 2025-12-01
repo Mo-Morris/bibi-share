@@ -19,7 +19,7 @@ model_path = os.getenv("MODEL_PATH")
 if model_path is None:
     raise ValueError("MODEL_PATH 环境变量未设置")
 pipeline = FluxPipeline.from_pretrained(model_path, torch_dtype=torch.bfloat16)
-pipeline.to("cuda:0")
+pipeline.to("cuda")
 logger.info("pipeline 加载完成")
 
 # 启用模型 CPU offload 以节省 VRAM（如果 GPU 足够可以移除这行）
