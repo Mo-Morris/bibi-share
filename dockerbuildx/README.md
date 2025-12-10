@@ -27,7 +27,7 @@ https://github.com/docker/buildx
 wget https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-amd64
 mv buildx-v0.30.1.linux-amd64 buildx
 chmod +x buildx
-mv buildx /usr/local/bin
+mv buildx /usr/local/bin/
 ```
 
 ## 跨架构配置
