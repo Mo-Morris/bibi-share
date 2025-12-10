@@ -19,7 +19,7 @@ vim /etc/docker/daemon.json
 ```
 systemct restart docker
 ```
-## 安装buildx
+## 安装buildx(大于docker 1.19的版本)
 
 直接下载最新版
 https://github.com/docker/buildx
@@ -63,7 +63,10 @@ buildx rm my-builder
 ```
 
 ## 用buildx构建镜像
-构建amd64
+登录
+```
+docker login
+```
 
 构建amd64+arm64
 ```
