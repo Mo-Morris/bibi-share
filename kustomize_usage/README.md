@@ -3,5 +3,7 @@
 ## 资源文件任意组合
 
 ```
-
+resources:
+  - deployment.yaml
+  - service.yaml
 ```
