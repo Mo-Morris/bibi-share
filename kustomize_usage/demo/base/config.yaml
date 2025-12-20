@@ -1,0 +1,8 @@
+PORT: 8080
+LOG_LEVEL: debug
+DATABASE:
+  HOST: localhost
+  PORT: 3306
+  USER: root
+  PASSWORD: password
+  NAME: mydatabase

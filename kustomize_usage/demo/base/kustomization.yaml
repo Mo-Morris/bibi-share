@@ -1,0 +1,59 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+
+
+commonLabels:
+  app: nginx
+  env: production
+
+
+secretGenerator:
+  - name: app-secret
+    files:
+      - password.txt
+    literals:
+      - user=foo
+      - password=bar
+    type: Opaque
+
+configMapGenerator:
+  - name: app-config
+    files:
+      - config.yaml
+    literals:
+      - DB_HOST=127.0.0.1
+      - DB_PORT=3306
+
+
+patchesStrategicMerge:
+  - affinity-patches.yaml
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: nginx-deployment
+    path: add-env-patch.yaml
+
+# inline patch
+patches:
+  - target:
+      kind: Deployment
+      name: nginx-deployment
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
+  # 或者使用策略合并方式
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: nginx-deployment
+      spec:
+        replicas: 3
+    target:
+      kind: Deployment

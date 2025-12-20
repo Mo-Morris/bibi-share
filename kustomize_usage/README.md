@@ -1,4 +1,4 @@
-# kubectl kustomize 的10种常见用法，编排效率直线提升
+# kubectl kustomize 的12种常见用法，编排效率直线提升
 
 ## 1. 资源文件任意组合
 
@@ -54,16 +54,12 @@ resources:
   - deployment.yaml
 
 images:
-  - name: nginx
+  - name: nginx # 这里是镜像名字，不是容器名字
     newName: nginx
-    newTag: "1.21.0"
-  # 或者直接指定完整镜像
-  - name: nginx
-    newName: registry.example.com/nginx
     newTag: "1.21.0"
 ```
 
-## 5. 环境变量注入
+## 5. 批量定义标签和注解
 
 为容器注入环境变量：
 
@@ -97,7 +93,6 @@ resources:
 configMapGenerator:
   - name: app-config
     files:
-      - config.properties
       - application.yaml
     # 或者从字面量生成
     literals:
@@ -109,7 +104,15 @@ secretGenerator:
   - name: app-secret
     files:
       - password.txt
+    literals:
+      - user=foo
+      - password=bar
     type: Opaque
+
+#选择指定，禁用secret或configmap生成hash
+generatorOptions:
+  disableNameSuffixHash: true
+
 ```
 
 ## 7. 策略合并补丁
@@ -127,14 +130,21 @@ patchesStrategicMerge:
   - increase-replicas.yaml
 ```
 
-`increase-replicas.yaml` 示例：
+`affinity-patches.yaml` 示例：
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 5
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values: ["minkube"]
 ```
 
 ## 8. JSON 6902 补丁
@@ -164,6 +174,12 @@ patchesJson6902:
   value:
     - name: ENV
       value: production
+```
+
+```
+- op: add
+  path: /spec/replicas
+  value: 3
 ```
 
 ## 9. Inline 补丁
@@ -197,7 +213,27 @@ patches:
       kind: Deployment
 ```
 
-## 10. 多环境管理（Base + Overlay）
+## 10. 副本数修改
+
+直接修改 Deployment 的副本数：
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+
+replicas:
+  - name: nginx-deployment
+    count: 5
+```
+
+- op: replace
+  path: /spec/ports/0/nodePort
+  value: 32080
+
+## 11. 多环境管理（Base + Overlay）
 
 使用 base 和 overlay 模式管理不同环境：
 
@@ -262,45 +298,6 @@ configMapGenerator:
   - name: app-config
     literals:
       - ENV=production
-```
-
-## 11. 副本数修改
-
-直接修改 Deployment 的副本数：
-
-```yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-  - deployment.yaml
-
-replicas:
-  - name: nginx-deployment
-    count: 5
-```
-
-## 12. 资源替换和转换
-
-使用 replacements 进行复杂的字段替换：
-
-```yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-  - deployment.yaml
-
-replacements:
-  - source:
-      kind: ConfigMap
-      name: app-config
-      fieldPath: data.DB_HOST
-    targets:
-      - select:
-          kind: Deployment
-        fieldPaths:
-          - spec.template.spec.containers.[name=nginx].env.[name=DB_HOST].value
 ```
 
 ## 使用示例
