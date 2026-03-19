@@ -37,3 +37,9 @@ docker compose -f docker-compose.yml run --rm openclaw-cli \
   }
 }
 ```
+
+修改配置
+```shell
+docker compose -f docker-compose.yml run --rm openclaw-cli \
+  config
+```
