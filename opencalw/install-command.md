@@ -11,13 +11,13 @@ docker compose -f docker-compose.yml run --rm openclaw-cli \
   config set gateway.controlUi.allowedOrigins '["*"]' --strict-json
 ```
 
-# 跳过设备校验
+## 跳过设备校验
 ```shell
 docker compose -f docker-compose.yml run --rm openclaw-cli \
     config set gateway.controlUi.dangerouslyDisableDeviceAuth true
 ```
 
-# 网关安全校验降级
+## 网关安全校验降级
 ```shell
 docker compose -f docker-compose.yml run --rm openclaw-cli \
 `config set gateway.controlUi.allowInsecureAuth true
