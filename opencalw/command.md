@@ -43,3 +43,8 @@ docker compose -f docker-compose.yml run --rm openclaw-cli \
 docker compose -f docker-compose.yml run --rm openclaw-cli \
   config
 ```
+
+设置配对码
+```shell
+openclaw pairing approve feishu <your pair code>
+```
