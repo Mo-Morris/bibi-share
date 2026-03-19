@@ -51,8 +51,15 @@ docker compose -f docker-compose.yml run --rm openclaw-cli \
 ```
 
 
-
-
+获取设备认证
+```shell
+#获取RequestID
+docker compose -f docker-compose.yml run --rm openclaw-cli \
+    devices list
+## 认证
+docker compose -f docker-compose.yml run --rm openclaw-cli \
+   devices approve <你的RequestID>
+```
 
 
 
