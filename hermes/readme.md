@@ -1,5 +1,5 @@
 
-拉取镜像
+拉取镜像[Dockerhub](https://hub.docker.com/r/nousresearch/hermes-agent/tags)最新镜像。
 ```shell
 docker pull nousresearch/hermes-agent:v2026.4.16
 ```
