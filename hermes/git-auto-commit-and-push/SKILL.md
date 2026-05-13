@@ -55,9 +55,31 @@ description: |
 6. 暂存代码：
    - `include_untracked=true` -> `git add -A`
    - 否则仅暂存已跟踪文件
-7. 执行提交：`git commit -m "<auto_message>"`
+7. 执行提交（**作者身份**，避免 Cursor 注入环境变量后变成 `cursor` 等错误作者）：
+   - 先读取期望的作者：**优先**本仓库 `local`（不受 Cursor 里可能被改写的全局配置影响），没有再读有效配置：
+     - `author_name=$(git config --local --get user.name || git config --get user.name)`
+     - `author_email=$(git config --local --get user.email || git config --get user.email)`
+   - 若二者任一为空：停止并提示在本仓库执行  
+     `git config user.name "你的名字"` 与 `git config user.email "你的邮箱"`  
+     （建议用 **`git config --local`** 只写进当前仓库，避免被其他环境改掉。）
+   - 提交命令（显式作者，覆盖 `GIT_AUTHOR_*` / `GIT_COMMITTER_*` 一类注入）：
+     - `git commit --author="${author_name} <${author_email}>" -m "<auto_message>"`
+   - 若你方环境仍强制改写作者，可在同一条命令前对当前 shell **取消继承**（按需选用其一即可）：
+     - `env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL git commit ...`
 8. 执行推送：`git push <push_remote> HEAD`
 9. 输出执行摘要（message、hash、目标分支、改动概览）。
+
+## 故障排除：提交者变成 Cursor 而不是本机用户
+
+**原因**：Cursor 执行 `git` 时可能带上 `GIT_AUTHOR_*` / `GIT_COMMITTER_*` 等环境变量，或读到另一套全局配置，导致作者显示为 `cursor`（或 Cursor 相关邮箱）。
+
+**处理**：
+
+1. 在本仓库设置**本地**身份（推荐，不依赖 IDE 环境）：
+   - `git config --local user.name "你的名字"`
+   - `git config --local user.email "你的邮箱"`
+2. 执行流程第 7 步已要求使用 `git commit --author="…"`，与上面配置一致即可稳定为你期望的作者。
+3. 若仍异常，在 Cursor 设置里检查是否启用了会改写 Git 全局配置的选项；或在终端用同一仓库手动 `git commit` 对比 `git config --list --show-origin`。
 
 ## 约束与安全规则
 - 禁止 `git push --force` / `--force-with-lease`
