@@ -45,20 +45,37 @@ description: |
    - `git diff --staged`
 3. 若无改动，输出“无可提交内容”并结束。
 4. 识别敏感文件并排除（如 `.env`、`.pem`、私钥、凭证文件）。
-5. 基于改动自动生成 commit message（必须带 Skill 标识）：
+5. 基于改动自动生成 commit message（必须带生成来源标识）：
    - 先提炼“本次改动的整体目的与结果”，再写 message
    - 默认使用全局摘要，不按文件逐个描述
    - message 应聚焦“这次改动整体完成了什么、解决了什么问题”，而不是“改了哪些文件”
    - message 的主体描述尽量使用中文，保持简洁自然
    - Git 约定前缀、技术名词、包名、命令、文件扩展名、常见短语等用英文更准确时，可以保留英文
    - `conventional` 风格保留英文类型前缀；冒号后的 subject 优先使用中文，必要时可夹带简短英文术语
-   - 标识规范：在 commit message 末尾追加 ` [skill:git-auto-commit-and-push]`
-   - `conventional`：`type(scope): 中文摘要 [skill:git-auto-commit-and-push]`
-   - `simple`：`一句中文简洁描述 [skill:git-auto-commit-and-push]`
+   - 标识规范：在提交摘要下一行追加 `generated-by: git-auto-commit-and-push`
+   - `conventional`：
+     ```md
+     type(scope): 中文摘要
+     generated-by: git-auto-commit-and-push
+     ```
+   - `simple`：
+     ```md
+     一句中文简洁描述
+     generated-by: git-auto-commit-and-push
+     ```
    - 示例：
-     - `feat(auth): 优化登录态校验流程 [skill:git-auto-commit-and-push]`
-     - `fix(api): 修复订单同步异常 [skill:git-auto-commit-and-push]`
-     - `优化技能的中文提交信息生成规则 [skill:git-auto-commit-and-push]`
+     ```md
+     feat(auth): 优化登录态校验流程
+     generated-by: git-auto-commit-and-push
+     ```
+     ```md
+     fix(api): 修复订单同步异常
+     generated-by: git-auto-commit-and-push
+     ```
+     ```md
+     优化技能的中文提交信息生成规则
+     generated-by: git-auto-commit-and-push
+     ```
 6. 暂存代码：
    - `include_untracked=true` -> `git add -A`
    - 否则仅暂存已跟踪文件
@@ -69,8 +86,8 @@ description: |
    - 若二者任一为空：停止并提示在本仓库执行  
      `git config user.name "你的名字"` 与 `git config user.email "你的邮箱"`  
      （建议用 **`git config --local`** 只写进当前仓库，避免被其他环境改掉。）
-   - 提交命令（显式作者，覆盖 `GIT_AUTHOR_*` / `GIT_COMMITTER_*` 一类注入）：
-     - `git commit --author="${author_name} <${author_email}>" -m "<auto_message>"`
+   - 提交命令（显式作者，覆盖 `GIT_AUTHOR_*` / `GIT_COMMITTER_*` 一类注入；`commit_message` 必须包含摘要行和下一行 `generated-by: git-auto-commit-and-push`）：
+     - `git commit --author="${author_name} <${author_email}>" -m "$commit_message"`
    - 若你方环境仍强制改写作者，可在同一条命令前对当前 shell **取消继承**（按需选用其一即可）：
      - `env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL git commit ...`
 8. 执行推送：`git push <push_remote> HEAD`
@@ -93,7 +110,7 @@ description: |
 - 禁止破坏性回滚命令（如 `git reset --hard`）
 - 不自动提交敏感文件
 - pre-commit 失败时停止，并返回报错信息
-- 提交信息必须包含 ` [skill:git-auto-commit-and-push]` 标识
+- 提交信息必须在摘要下一行包含 `generated-by: git-auto-commit-and-push` 标识
 - 提交信息优先使用中文表达整体改动；若英文能更准确表达技术含义，可以适度保留
 - 避免生成过于泛泛的英文 subject，例如 `update files`、`fix bug`
 - 默认不得在提交信息中罗列具体文件名；除非用户明确要求按文件维度描述
@@ -102,7 +119,11 @@ description: |
 ```md
 已完成 Git 提交与推送。
 
-- Commit Message: <message> [skill:git-auto-commit-and-push]
+- Commit Message:
+  ```md
+  <message>
+  generated-by: git-auto-commit-and-push
+  ```
 - Commit Hash: <hash>
 - Remote/Branch: <remote>/<branch>
 
@@ -122,7 +143,7 @@ description: |
 要求：
 - 不要 force push
 - 不提交 .env、密钥等敏感文件
-- commit message 必须包含后缀 `[skill:git-auto-commit-and-push]`
+- commit message 必须在摘要下一行包含 `generated-by: git-auto-commit-and-push`
 - commit message 尽量使用中文表达；conventional 类型前缀、技术名词和简短英文术语可保留
 - commit message 请基于整体改动总结，不要逐文件描述
 - 若没有改动请直接说明
