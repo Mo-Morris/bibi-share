@@ -9,7 +9,7 @@ description: |
 # Git Auto Commit And Push
 
 ## 目标
-根据仓库当前变更，自动生成高质量提交信息，并完成代码提交与推送。
+根据仓库当前变更，自动生成清晰、自然、以中文为主的提交信息，并完成代码提交与推送。
 
 ## 适用场景
 - 需要快速完成一次规范提交
@@ -32,7 +32,7 @@ description: |
   - 可选值：`conventional` / `simple`
 - `push_remote`（可选，默认 `origin`）
 - `include_untracked`（可选，默认 `true`）
-- `language`（可选，默认 `zh`）
+- `language`（可选，默认 `zh`，提交信息优先使用中文表达）
 - `summary_focus`（可选，默认 `overall`）
   - 可选值：`overall` / `file-level`
   - 建议始终使用 `overall`
@@ -49,9 +49,16 @@ description: |
    - 先提炼“本次改动的整体目的与结果”，再写 message
    - 默认使用全局摘要，不按文件逐个描述
    - message 应聚焦“这次改动整体完成了什么、解决了什么问题”，而不是“改了哪些文件”
+   - message 的主体描述尽量使用中文，保持简洁自然
+   - Git 约定前缀、技术名词、包名、命令、文件扩展名、常见短语等用英文更准确时，可以保留英文
+   - `conventional` 风格保留英文类型前缀；冒号后的 subject 优先使用中文，必要时可夹带简短英文术语
    - 标识规范：在 commit message 末尾追加 ` [skill:git-auto-commit-and-push]`
-   - `conventional`：`type(scope): subject [skill:git-auto-commit-and-push]`
-   - `simple`：`一句简洁描述 [skill:git-auto-commit-and-push]`
+   - `conventional`：`type(scope): 中文摘要 [skill:git-auto-commit-and-push]`
+   - `simple`：`一句中文简洁描述 [skill:git-auto-commit-and-push]`
+   - 示例：
+     - `feat(auth): 优化登录态校验流程 [skill:git-auto-commit-and-push]`
+     - `fix(api): 修复订单同步异常 [skill:git-auto-commit-and-push]`
+     - `优化技能的中文提交信息生成规则 [skill:git-auto-commit-and-push]`
 6. 暂存代码：
    - `include_untracked=true` -> `git add -A`
    - 否则仅暂存已跟踪文件
@@ -87,6 +94,8 @@ description: |
 - 不自动提交敏感文件
 - pre-commit 失败时停止，并返回报错信息
 - 提交信息必须包含 ` [skill:git-auto-commit-and-push]` 标识
+- 提交信息优先使用中文表达整体改动；若英文能更准确表达技术含义，可以适度保留
+- 避免生成过于泛泛的英文 subject，例如 `update files`、`fix bug`
 - 默认不得在提交信息中罗列具体文件名；除非用户明确要求按文件维度描述
 
 ## 输出格式
@@ -114,6 +123,7 @@ description: |
 - 不要 force push
 - 不提交 .env、密钥等敏感文件
 - commit message 必须包含后缀 `[skill:git-auto-commit-and-push]`
+- commit message 尽量使用中文表达；conventional 类型前缀、技术名词和简短英文术语可保留
 - commit message 请基于整体改动总结，不要逐文件描述
 - 若没有改动请直接说明
 - 若 hook 失败请停止并反馈错误
