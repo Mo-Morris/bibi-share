@@ -34,3 +34,7 @@ include_only = ["PATH", "HOME","https_proxy","http_proxy","all_proxy"]
 ```
 
 退出codex，再重启即可。
+
+## 更优雅的办法
+
+在 `~/.codex`下面，新增.env文件，将上述内容加到环境变量。
