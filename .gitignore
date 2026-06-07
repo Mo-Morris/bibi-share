@@ -1,1 +1,4 @@
 idea*
+scripts/
+docs/
+.DS_Store
