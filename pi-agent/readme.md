@@ -1,30 +1,21 @@
 # pi agent 最佳实践
 
 [pi agent](https://pi.dev/docs/latest) 是一个轻量的命令行工具，也是小龙虾底层使用的 *harnesse* agent 工具。
-
 它只提供最基础的模型交互的能力，至于其他的harnesse agent的能力（例如Agent记忆、接入交流通道、多Agent这些），都是通过自定义拓展的方式来开发的。
-
 非常适合想定制 *harnesse* agent 的朋友，如果你想要的是一个直接能用的 *harnesse* agent，这个pi agent也许不是很适合你，直接用openclaw、hermes会更好。
-
 它支持自定义 TypeScript extensions、skills、prompt templates、themes 和 pi packages 来扩展能力，非常适合用来搭建定制化的 harnesse agent。
-
 ## 安装和使用
-
 ```shell
 npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 ```
-
 然后在需要使用 AI 的项目下执行 `pi` 即可开始使用。首次使用时，先执行 `/login` 设置模型。
-
 ## 拓展功能实战
-
 下面用一个具体项目把这些扩展方式串起来。
-
 这个示例是一个「代码变更影响评估」的演示（为了方便演示，这是一个小范围的特定功能，也可以参考该方案，实现一些通用功能，例如Agent记忆、接入交流通道、多Agent等等）。
-
 实现的效果是：代码提交前通常不只关心“改了什么”，还要判断影响到哪些模块、哪些地方需要人工复核。
-
 用 extension 把这些本地信号整理成稳定的上下文，再用 skill 和 prompt template 约束 agent 的输出方式，同时覆盖 pi agent 的几种扩展方式：
+
+---
 
 - 用 `TypeScript extension` 给 agent 增加一个构造变更上下文的工具。
 - 用 `custom provider` 接入团队内部的模型网关。
@@ -116,7 +107,7 @@ export default function (pi: ExtensionAPI) {
 }
 ```
 
-把这些探查逻辑放进 extension 后，agent 拿到的是一份固定结构的上下文，而不是零散的命令输出。`changedFiles` 保留完整变更文件列表，`configHints` 只标记疑似配置改动，`largeFiles` 用来提示可能需要人工复核的生成物。
+> 把这些探查逻辑放进 extension 后，agent 拿到的是一份固定结构的上下文，而不是零散的命令输出。`changedFiles` 保留完整变更文件列表，`configHints` 只标记疑似配置改动，`largeFiles` 用来提示可能需要人工复核的生成物。
 
 extension 也可以监听 pi 的生命周期事件。例如下面这个片段会在 session 启动时提示 extension 已加载，并在调用 `bash` 工具前拦截危险命令：
 
@@ -500,6 +491,7 @@ pi list                     # show installed packages from settings
 
 把这个仓库分发给团队后，团队成员就能使用同一套命令、工具和输出规范。后续可以继续扩展，例如：
 
+
 - 让 prompt template 支持“只评估 staged changes”，并把参数传给 `change_context`。
 - 在 prompt template 里增加“请生成 PR title”。
 - 在 skill 里补充团队特定的发布检查项、灰度策略和回滚要求。
@@ -507,3 +499,4 @@ pi list                     # show installed packages from settings
 - 再写一个 extension 读取最近一次 CI 结果，把风险判断和复核重点补充得更具体。
 
 可以先用 prompt template 固定入口，再用 skill 固定行为规范，最后用 extension 接入项目上下文。这样组织后，工具、流程和分发方式都能分别维护。
+

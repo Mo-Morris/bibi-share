@@ -3,7 +3,6 @@
 ## 背景说明
 
 本期视频的主题稍微有点绕，将为大家分享，如何实现将DeepSeek注册到Codex。但是又不建议大家用Codex使用DeepSeek。主要因为用Codex使用DeepSeek不仅不是很兼容，而且非常耗Token。
-
 ## deepseek注册到codex原理分析
 
 ![](./image.jpg)
@@ -18,3 +17,4 @@
 ## 推荐使用DeepSeek的最佳组合
 
 [CodeWhale(DeepSeek-TUI)](https://github.com/Hmbown/CodeWhale)
+[DeepSeek-Reasonix](https://github.com/esengine/deepseek-reasonix)
