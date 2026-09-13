@@ -1,6 +1,6 @@
 # DeepSeek Harness 四种模式项目实战：极简、标准、PTC 与创造模式怎么选
 
-![DeepSeek Harness 四种模式项目实战](./dsh-cover.png)
+![DeepSeek Harness 四种模式项目实战](./images/dsh-cover.png)
 
 使用 DeepSeek Harness（下文简称 DSH）时，你会发现它和许多 Agent 工具不太一样：在执行任务之前，还可以选择 **极简模式、标准模式、PTC 模式和创造模式**。
 
@@ -10,7 +10,7 @@
 
 ## 四种模式先看结论
 
-![DSH 四种模式概览](./dsh-four-modes.png)
+![DSH 四种模式概览](./images/dsh-four-modes.png)
 
 | 模式 | 核心特点 | 更适合的任务 |
 | --- | --- | --- |
@@ -51,7 +51,7 @@ pnpm dsh web
 
 `pnpm install` 负责安装项目依赖；`pnpm run build` 会构建 host、client 以及不同功能对应的 package；最后通过 `pnpm dsh web` 启动 DSH。
 
-![从源码安装 DSH 时的依赖安装结果](./dsh-source-install.jpg)
+![从源码安装 DSH 时的依赖安装结果](./images/dsh-source-install.jpg)
 
 安装时可能出现与当前系统平台不匹配的可选原生包 warning，构建时也可能看到 chunk 体积提示。只要依赖安装和构建最终成功，就可以继续。首次进入 Web UI 时会显示 Internal Testing Notice，确认提示后点击 **Continue**。
 
@@ -77,7 +77,7 @@ API Key 属于私密凭据，不要出现在截图、录屏、日志或公开仓
 
 点击左下角的设置，进入 **General** 页面。这里可以设置默认 Agent 预设、会话权限、界面语言、外观主题，以及按下 Enter 时的处理方式。
 
-![DSH 通用设置](./dsh-general-settings.jpg)
+![DSH 通用设置](./images/dsh-general-settings.jpg)
 
 为了完整演示代码修改和命令执行，本次把会话权限设置为完全权限。DSH 会再次弹出风险确认，阅读提示并确认即可。实际使用中，请根据项目的敏感程度选择合适的权限，不要对不可信目录开放不必要的写入和命令执行能力。
 
@@ -85,7 +85,7 @@ API Key 属于私密凭据，不要出现在截图、录屏、日志或公开仓
 
 在模型页面可以管理当前使用的模型和 Provider。DSH 已预置 DeepSeek、OpenAI、Anthropic、Google、OpenRouter 等多种 Provider。选择对应服务后，可以继续填写 API Key 和模型配置。
 
-![DSH Provider 配置页面](./dsh-provider.jpg)
+![DSH Provider 配置页面](./images/dsh-provider.jpg)
 
 如果需要接入兼容接口，也可以点击 **添加自定义提供方**，填写 Provider ID、显示名称、API 地址、API 协议、API Key 和模型目录。
 
@@ -93,7 +93,7 @@ API Key 属于私密凭据，不要出现在截图、录屏、日志或公开仓
 
 插件页面会列出当前部署的各类能力，包括模型调用、Session、Agent、任务、凭据、持久化和附件等。DSH 的模型、工具和运行环境都由插件组织，这正是界面中 **Everything is a Plugin** 的体现。
 
-![DSH 插件页面](./dsh-plugins.jpg)
+![DSH 插件页面](./images/dsh-plugins.jpg)
 
 回到会话页面后，还可以为当前 Session 单独调整权限、选择模型和推理强度，并切换本次任务使用的模式。
 
@@ -107,7 +107,7 @@ npm run dev
 
 然后访问 `127.0.0.1:5173`。初始页面中，商品卡片和购物车都没有显示国产或进口标记。
 
-![演示项目的初始页面](./dsh-demo-project.jpg)
+![演示项目的初始页面](./images/dsh-demo-project.jpg)
 
 四种模式使用相同的需求：
 
@@ -134,7 +134,7 @@ git clean -fd
 - `bash`：执行命令和脚本
 - `str_replace_editor`：读取和修改文本文件
 
-![极简模式只加载两个核心 Tool](./dsh-minimal-tools.jpg)
+![极简模式只加载两个核心 Tool](./images/dsh-minimal-tools.jpg)
 
 虽然工具数量很少，Agent 仍然可以通过 Bash 和文本编辑完成目录定位、代码读取、批量修改和测试。它先根据错误重新定位工作区，确认 `fruits.csv` 中已经存在 `origin_type` 字段，再修改商品数据、卡片、购物车和样式，最后补充测试。
 
@@ -146,7 +146,7 @@ git clean -fd
 
 恢复代码后，新建 Session 并选择 **标准模式**。再次打开轨迹中的 Tools，可以看到搜索、读取、编辑、命令执行和任务管理等更完整的细粒度工具。
 
-![标准模式提供完整、细粒度的工具集](./dsh-standard-tools.jpg)
+![标准模式提供完整、细粒度的工具集](./images/dsh-standard-tools.jpg)
 
 标准模式不必把所有操作都组织成 Bash 脚本。例如查目录可以直接使用搜索工具，读文件使用读取工具，修改代码使用编辑工具，运行测试再调用命令工具。每一步的目的和输入输出都能在轨迹中单独查看，因此调用链通常更容易理解和排查。
 
@@ -156,11 +156,11 @@ git clean -fd
 
 再次恢复代码，新建 Session 并选择 **PTC 模式**。打开轨迹中的 Initial System Prompt 和 Tools，会发现外层只提供一个 `run_code`。
 
-![PTC 模式外层通过 run_code 执行程序](./dsh-ptc-run-code.jpg)
+![PTC 模式外层通过 run_code 执行程序](./images/dsh-ptc-run-code.jpg)
 
 点击展开 `run_code`，可以看到 Agent 生成的 TypeScript payload。它会在程序中调用当前可用的 `subtool`，把多个步骤组合在一次代码执行里。
 
-![PTC 模式在 TypeScript 中调用 subtool](./dsh-ptc-subtool.jpg)
+![PTC 模式在 TypeScript 中调用 subtool](./images/dsh-ptc-subtool.jpg)
 
 这里需要区分 **Tool** 与 **subtool**：
 
@@ -170,7 +170,7 @@ git clean -fd
 
 因此，PTC 更适合需要目录检查、文件读取、数据处理、批量修改和验证的多步骤任务。但程序本身也必须处理好路径、状态、字符串转义、重复修改和异常。演示中出现了多次 `CODE_RUN_FAILED`，Agent 根据每次返回的错误重新读取文件、缩小修改范围，最终完成页面和测试，得到 `8 pass，0 fail`。
 
-![极简、标准与 PTC 的工具组织方式对比](./dsh-three-mode-summary.png)
+![极简、标准与 PTC 的工具组织方式对比](./images/dsh-three-mode-summary.png)
 
 ## 创造模式：把工作规范沉淀为可复用 Agent
 
@@ -187,11 +187,11 @@ git clean -fd
 
 提交创建需求后，可以在轨迹中查看创造模式加载的 Cordis runtime 相关工具，以及生成 preset、设置 persona 和继续测试新 Agent 的过程。
 
-![创造模式调用 Cordis runtime 相关工具](./dsh-creation-tools.jpg)
+![创造模式调用 Cordis runtime 相关工具](./images/dsh-creation-tools.jpg)
 
 创建成功后，项目中会生成 `agent.cordis.yml`。这份配置继承了标准预设的工具能力，并加入“水果上新助手”的中文角色说明和执行规则。
 
-![生成的 agent.cordis.yml 配置](./dsh-agent-config.jpg)
+![生成的 agent.cordis.yml 配置](./images/dsh-agent-config.jpg)
 
 接下来新建 Session，在 Agent preset 中选择“水果上新助手”，并给出一条信息不完整的任务：
 
@@ -199,15 +199,15 @@ git clean -fd
 
 由于没有提供图片来源，Agent 没有直接修改项目，而是只追问缺少的图片信息。这说明 preset 中的约束已经生效。
 
-![信息不完整时，Agent 主动追问图片来源](./dsh-missing-image.jpg)
+![信息不完整时，Agent 主动追问图片来源](./images/dsh-missing-image.jpg)
 
 补充一个本地图片的绝对路径后，Agent 才继续更新数据文件并运行测试，最终得到 `4 pass，0 fail`。刷新页面，可以看到四川耙耙柑已经出现在商品列表中，图片、价格和国产标签均正常显示。
 
-![水果上新助手完成商品上新](./dsh-final-product.jpg)
+![水果上新助手完成商品上新](./images/dsh-final-product.jpg)
 
 创建完成的 Agent preset 还可以继续编辑，调整角色说明和规则。以后遇到相同流程，只需要选择这个 Agent 并提供商品信息，无需重复解释整套上新规范。
 
-![可复用的水果上新助手 Agent preset](./dsh-custom-agent.jpg)
+![可复用的水果上新助手 Agent preset](./images/dsh-custom-agent.jpg)
 
 ## 四种模式应该怎么选
 

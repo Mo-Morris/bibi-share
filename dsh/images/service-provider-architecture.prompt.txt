@@ -1,0 +1,15 @@
+Use case: infographic-diagram
+Create a polished Chinese educational architecture diagram, wide landscape 16:9, high resolution, white background, crisp large Chinese typography, restrained navy, blue, teal and orange, flat rounded rectangular cards, generous whitespace, precise connectors, suitable for a technical talk. No decorative robots or unnecessary icons.
+Title: "DSH 一切皆插件：从工具到服务"
+Subtitle: "教学示例：同一个 greet 工具，替换不同的问候 Provider"
+Organize into two clearly separated areas: main architecture in upper two-thirds, switching demonstration in lower third.
+Main architecture: a thin enclosing frame labeled "Cordis 插件运行环境". Inside left card blue titled "Consumer｜工具插件", body three lines "greet", "声明依赖：inject = ['tools', 'greeting']", "execute → ctx.greeting.greet(name)". Above or beside this card outside frame a small "模型" box sends a one-way arrow to Consumer labeled "Tool Call（经 Harness 调度）".
+Center card teal titled "Service Definition｜服务定义", body "ctx.greeting", "greet(name: string): string", "约定参数、返回值与行为". Solid arrow from Consumer to center labeled "按接口调用". This card represents the service interface, not a separate runtime execution hop.
+Right side two vertically stacked smaller cards with orange borders: upper "Provider A｜中文问候" body "返回：你好，Morris！"; lower "Provider B｜英文问候" body "返回：Hello, Morris!". Dashed arrows from BOTH provider cards to center card labeled "实现并提供服务". Clear nearby note "同一作用域选择一个 Provider".
+At top of provider area a small config box "cordis.yml" connects to provider area with label "配置选择并挂载". Avoid suggesting model directly selects providers or providers are both simultaneously used.
+Bottom demonstration heading "只换配置，工具代码不变". Two equal width rows or cards:
+"组合 A：greet 工具 + 中文 Provider → 你好，Morris！"
+"组合 B：greet 工具 + 英文 Provider → Hello, Morris!"
+Footer concise statement: "工具负责模型交互 · 服务定义约定能力 · Provider 提供具体实现"
+Tiny footnote: "ctx.greeting 为教学示例服务"
+Make all Chinese characters exact and readable. Technical arrows must distinguish call (solid) and implements/provides (dashed). No invented code API beyond the shown conceptual example.
