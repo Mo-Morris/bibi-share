@@ -14,4 +14,3 @@
 | [Codex 调用日志分析](./codex-call-log-analysis.md) | 调用统计与探索路径 |
 | [Agent 仓库探索规则示例](./Agents.md) | 可参考的仓库探索约束 |
 | [API 调用示例](./call-llm-api.py) | 配套 Python 脚本 |
-| [DeepSeek 接入原始笔记](./codex-deepseek-origin.md) | 占位条目，待补充 |

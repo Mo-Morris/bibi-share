@@ -4,9 +4,10 @@
 
 Dify 的组件关系图与配套资料。
 
-## 阅读目录
+## 组件间的依赖关系
 
-| 内容 | 说明 |
-| --- | --- |
-| [组件依赖关系](./architecture.md) | 架构图与组件关系 |
-| [配套脚本](./reset.py) | 原有 Python 示例 |
+![Dify 组件依赖关系](./docker-compose.png)
+
+## 配套脚本
+
+[reset.py](./reset.py)：原有 Python 示例。

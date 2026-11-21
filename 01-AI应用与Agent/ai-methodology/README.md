@@ -10,4 +10,3 @@
 | --- | --- |
 | [OpenSpec 最佳实践](./openspec.md) | 规格驱动开发与项目工作流 |
 | [Superpowers 源码分析与实践](./superpowers.md) | 方法论插件、Skills 与开发流程 |
-| [gtack](./gtack.md) | 占位条目，待补充 |

@@ -10,5 +10,3 @@
 | --- | --- |
 | [Node.js / nvm](./nodejs/README.md) | Node.js 版本管理与项目环境切换 |
 | [Oh My Zsh](./oh-my-zsh/README.md) | Zsh 环境的安装与使用 |
-
-标注“待补充”的条目保留作为选题入口；其余专题可进入各自目录查看教程、笔记和配套示例。
