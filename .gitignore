@@ -3,3 +3,10 @@ scripts/
 docs/
 .DS_Store
 *.pyc
+
+# Local agent skills
+/.agents/skills/
+/.claude/skills/
+/.cursor/skills/
+/.codex/skills/
+/skills/
