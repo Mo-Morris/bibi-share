@@ -1,0 +1,57 @@
+# 执行目录：本专题 lws/ 目录。安装 LWS 控制器后：
+# kubectl apply -f demo/lws-demo.yaml
+# 仅用 BusyBox 演示：Leader 先就绪，Worker 后启动；扩容按完整小组进行。
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lws-demo
+---
+apiVersion: leaderworkerset.x-k8s.io/v1
+kind: LeaderWorkerSet
+metadata:
+  name: busybox-demo
+  namespace: lws-demo
+spec:
+  # 完整小组数。改为 2 后，共有 2 × 3 = 6 个 Pod。
+  replicas: 1
+  # 启动策略：控制每组 Worker 的创建时机，LWS v1.0.0 支持以下两种。
+  # - LeaderCreated（默认）：Leader Pod 对象创建后即可创建 Worker，
+  #   不等待 Leader 容器启动或就绪，两者可并行初始化。
+  # - LeaderReady：Leader Pod 达到 Ready 后才创建 Worker，
+  #   适合 Worker 需要等 Leader 初始化完成的场景。
+  # 本例使用 LeaderReady，配合下方 readinessProbe 演示先后启动。
+  # 两种策略都不规定 Worker 之间的启动顺序。
+  startupPolicy: LeaderReady
+  leaderWorkerTemplate:
+    # 每组 3 个 Pod：1 个 Leader + 2 个 Worker。
+    size: 3
+    leaderTemplate:
+      spec:
+        terminationGracePeriodSeconds: 5
+        containers:
+          - name: leader
+            image: busybox:1.37
+            command: ["sh", "-ec"]
+            args:
+              - |
+                echo "$(hostname): Leader starting, preparing for 15 seconds..."
+                sleep 15
+                touch /tmp/ready
+                echo "$(hostname): Leader initialization complete"
+                while true; do sleep 3600; done
+            # /tmp/ready 是容器内的临时文件，不需要挂载卷。
+            readinessProbe:
+              exec:
+                command: ["test", "-f", "/tmp/ready"]
+              periodSeconds: 1
+    workerTemplate:
+      spec:
+        terminationGracePeriodSeconds: 5
+        containers:
+          - name: worker
+            image: busybox:1.37
+            command: ["sh", "-ec"]
+            args:
+              - |
+                echo "$(hostname): Worker started"
+                while true; do sleep 3600; done
